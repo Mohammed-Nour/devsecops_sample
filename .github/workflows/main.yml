@@ -75,7 +75,9 @@ jobs:
     steps:
       - name: Checkout My Repository
         uses: actions/checkout@v2
-    
+
+      - name: Verify Directory Structure
+        run: ls -la
 
       - name: Run Installer Script
         run: bash installer.sh
