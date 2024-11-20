@@ -96,10 +96,13 @@ jobs:
         with:
           target: "http://127.0.0.1:8000"
           rules_file_name: zap-rules.json
-          cmd_options: "-config api.disablekey=true"
+          cmd_options: "-config api.disablekey=true -reportformat html -outputfile zap-report.html"
+
+      - name: Verify ZAP Report File
+        run: ls -la
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: zap-findings
-          path: zap-report.html
+          path: zap-reports/zap-report.html
