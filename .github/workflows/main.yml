@@ -99,6 +99,7 @@ jobs:
         with:
           target: "http://127.0.0.1:8000/login"
           cmd_options: "-J report_json.json -w report_md.md -r report_html.html"
+          issue-generation: false
 
       - name: Verify ZAP Report File
         run: ls -la
@@ -107,4 +108,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: zap-findings
-          path: report_html.json
+          path: |
+            report_json.json
+            report_md.md
+            report_html.html
