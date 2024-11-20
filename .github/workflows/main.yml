@@ -73,8 +73,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone My Repository
-        run: git clone git@github.com:Mohammed-Nour/devsecops_sample.git
+      - name: Checkout My Repository
+        uses: actions/checkout@v2
+    
 
       - name: Run Installer Script
         run: bash installer.sh
