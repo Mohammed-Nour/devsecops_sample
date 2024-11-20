@@ -69,7 +69,7 @@ jobs:
           path: scout-report.sarif
 
   dast_scan:
-    name: Deploy and Run DAST Scan
+    name: Deploy and Run DAST Scan with Nikto
     runs-on: ubuntu-latest
 
     steps:
@@ -94,20 +94,19 @@ jobs:
       - name: Check Server Availability
         run: curl -I http://127.0.0.1:8000
 
-      - name: Run DAST Scan with OWASP ZAP
-        uses: zaproxy/action-full-scan@v0.6.0
-        with:
-          target: "http://127.0.0.1:8000/login"
-          cmd_options: "-configfile /zap/wrk/onfig -J report_json.json -w report_md.md -r report_html.html"
+      - name: Install Nikto
+        run: sudo apt-get update && sudo apt-get install -y nikto
 
-      - name: Verify ZAP Report File
+
+      - name: Run Nikto Scan
+        run: |
+          nikto -h http://127.0.0.1:8000 -o nikto-report.html -Format html
+
+      - name: Verify Nikto Report File
         run: ls -la
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: zap-findings
-          path: |
-            report_json.json
-            report_md.md
-            report_html.html
+          name: nikto-report
+          path: nikto-report.html
