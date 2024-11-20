@@ -104,9 +104,6 @@ jobs:
       - name: Verify ZAP Report File
         run: ls -la
 
-      - name: Check ZAP Logs
-        run: cat zap.log
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
