@@ -81,15 +81,12 @@ jobs:
 
       - name: Run Installer Script
         run: bash installer.sh
-        working-directory: devsecops_sample
 
       - name: Apply Migrations
         run: python3 manage.py migrate
-        working-directory: devsecops_sample
 
       - name: Run Server
         run: nohup python3 manage.py runserver 0.0.0.0:8000 &
-        working-directory: devsecops_sample
 
       - name: Wait for Server to Start
         run: sleep 10
@@ -99,10 +96,10 @@ jobs:
         with:
           target: "http://127.0.0.1:8000"
           rules_file_name: zap-rules.json
-          cmd_options: "-config api.disablekey=true -reportformat html -outputfile zap-report.html"
+          cmd_options: "-config api.disablekey=true"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: zap-findings
-          path: devsecops_sample/zap-report.html
+          path: zap-report.html
