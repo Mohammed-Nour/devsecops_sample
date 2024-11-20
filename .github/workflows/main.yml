@@ -91,18 +91,24 @@ jobs:
       - name: Wait for Server to Start
         run: sleep 10
 
+      - name: Check Server Availability
+        run: curl -I http://127.0.0.1:8000
+
       - name: Run DAST Scan with OWASP ZAP
         uses: zaproxy/action-full-scan@v0.6.0
         with:
           target: "http://127.0.0.1:8000"
           rules_file_name: zap-rules.json
-          cmd_options: "-config api.disablekey=true -reportformat html -outputfile zap-report.html"
+          cmd_options: "-config api.disablekey=true"
 
       - name: Verify ZAP Report File
         run: ls -la
+
+      - name: Check ZAP Logs
+        run: cat zap.log
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: zap-findings
-          path: zap-reports/zap-report.html
+          path: report_html.html
