@@ -86,7 +86,7 @@ jobs:
         run: python3 manage.py migrate
 
       - name: Run Server
-        run: python3 manage.py runserver
+        run: nohup python3 manage.py runserver 0.0.0.0:8000 &
 
       - name: Wait for Server to Start
         run: sleep 10
