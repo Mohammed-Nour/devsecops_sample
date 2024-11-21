@@ -5,7 +5,7 @@ import subprocess, json
 cmd_str = "pwd; ls"
 process = subprocess.Popen(
     cmd_str,
-    shell=True,
+    check=True,
     stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE)
 stdout, stderr = process.communicate()
@@ -17,7 +17,8 @@ print(data + stderr)
 '''
 import yaml, subprocess
 stream = open('/home/fox/test.yaml', 'r')
-data = yaml.load(stream)
+data = yaml.safe_load(stream)
+
 
 '''
 stdout, stderr = data.communicate()

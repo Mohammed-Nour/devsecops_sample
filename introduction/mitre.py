@@ -1,13 +1,15 @@
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect
 from .views import authentication_decorator
-from hashlib import md5
+from hashlib import sha256
 import jwt
 import datetime
 import re
 import subprocess
 from .models import CSRF_user_tbl
 from django.views.decorators.csrf import csrf_exempt
+import ast
+
 # import os
 
 ## Mitre top1 | CWE:787
@@ -155,7 +157,7 @@ def csrf_lab_login(request):
     elif request.method == 'POST':
         password = request.POST.get('password')
         username = request.POST.get('username')
-        password = md5(password.encode()).hexdigest()
+        password = sha256(password.encode()).hexdigest()
         User = CSRF_user_tbl.objects.filter(username=username, password=password)
         if User:
             payload ={
@@ -212,7 +214,7 @@ def csrf_transfer_monei_api(request,recipent,amount):
 def mitre_lab_25_api(request):
     if request.method == "POST":
         expression = request.POST.get('expression')
-        result = eval(expression)
+        result = ast.literal_eval(expression)
         return JsonResponse({'result': result})
     else:
         return redirect('/mitre/25/lab/')
@@ -227,7 +229,7 @@ def mitre_lab_17(request):
     return render(request, 'mitre/mitre_lab_17.html')
 
 def command_out(command):
-    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return process.communicate()
     
 
